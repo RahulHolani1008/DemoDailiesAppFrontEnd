@@ -1,34 +1,35 @@
 <template>
-  <q-header reveal elevated class="bg-primary-gray text-black">
+  <q-header reveal elevated class="bg-grey-1 text-black">
     <q-toolbar>
       <q-toolbar-title>
-          <router-link class="text-decoration-none cursor-pointer" to="/">Dailies</router-link>
+        <router-link class="text-decoration-none cursor-pointer" to="/">Dailies</router-link>
       </q-toolbar-title>
-      <Register :model="registerOpen" @medium="closeRegister" v-if="!this.$store.state.isLoggedIn"/>
+      <DButton label="Register" />
+      <Register :model="registerOpen" @medium="closeRegister" v-if="!this.$store.state.isLoggedIn" />
     </q-toolbar>
   </q-header>
 </template>
 <script>
-import DButton from "../../base-components/DButton.vue";
-import Register from "../../sub-components/Register/Register.vue";
+import DButton from "../DButton.vue";
+import Register from "../../sub-components/Register.vue";
 export default {
-    name: "Header",
+  name: "Header",
   components: {
     DButton,
     Register,
   },
   data() {
     return {
-      registerOpen: false
+      registerOpen: false,
     };
   },
   methods: {
-    openLogin() {
+    openRegister() {
       this.registerOpen = true;
     },
-    closeLogin() {
+    closeRegister() {
       this.registerOpen = false;
-    }
-  }
+    },
+  },
 };
 </script>

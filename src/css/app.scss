@@ -1,1 +1,47 @@
 // app global css in SCSS form
+
+
+.bg-dailies-blue{
+    background-color: #1F5F9F;
+}
+
+.text-decoration-none{
+    text-decoration: none;
+}
+
+.q-card-custom{
+    border-radius: 30px;
+    height: 45vh;   
+}
+
+.bottom-right-30{
+    bottom: 30px;
+    right: 25px;
+}
+
+.fs--22{
+    font-size: 22px;
+}
+
+.fs--18{
+    font-size: 18px;
+}
+
+.left-25{
+    left: 25px;
+}
+
+.bottom-100{
+    bottom: 70px;
+}
+
+.bg-images{
+    background: url('../assets/pexels-photo-1001914.jpeg');
+    background-size: cover;
+    border-radius: 30px;
+}
+
+.bg-black{
+    background-color: rgba(0, 0, 0, 0.4) !important;
+}
+

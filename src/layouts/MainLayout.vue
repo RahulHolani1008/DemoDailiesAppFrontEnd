@@ -12,10 +12,13 @@
 import DFooter from "../components/base-components/Footer/Footer.vue";
 import DHeader from "../components/base-components/Header/Header.vue";
 export default {
-  name: 'MainLayout',
-  data () {
-    return {
-    }
-  }
-}
+  name: "MainLayout",
+  data() {
+    return {};
+  },
+  components: {
+    DHeader,
+    DFooter,
+  },
+};
 </script>
