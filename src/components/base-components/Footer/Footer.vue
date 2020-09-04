@@ -88,5 +88,7 @@ li:not(.text-h6) {
 }
 </style>
 <script>
-export default {};
+export default {
+    name:"Footer"
+};
 </script>

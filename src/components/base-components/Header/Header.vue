@@ -4,32 +4,30 @@
       <q-toolbar-title>
           <router-link class="text-decoration-none cursor-pointer" to="/">Dailies</router-link>
       </q-toolbar-title>
-      <Login :medium="loginOpen" @medium="closeLogin" />
-      <ForgotPassword :medium="forgotOpen" />
+      <Register :model="registerOpen" @medium="closeRegister" v-if="!this.$store.state.isLoggedIn"/>
     </q-toolbar>
   </q-header>
 </template>
 <script>
-import BHButton from "../../base-components/BHButton.vue";
-import Login from "../../sub-components/Login/Login.vue";
+import DButton from "../../base-components/DButton.vue";
+import Register from "../../sub-components/Register/Register.vue";
 export default {
+    name: "Header",
   components: {
-    BHButton,
-    Login,
-    ForgotPassword
+    DButton,
+    Register,
   },
   data() {
     return {
-      loginOpen: false,
-      forgotOpen: false
+      registerOpen: false
     };
   },
   methods: {
     openLogin() {
-      this.loginOpen = true;
+      this.registerOpen = true;
     },
     closeLogin() {
-      this.loginOpen = false;
+      this.registerOpen = false;
     }
   }
 };
