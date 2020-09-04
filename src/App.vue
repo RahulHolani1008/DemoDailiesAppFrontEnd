@@ -1,10 +1,14 @@
 <template>
   <div id="q-app">
-    <router-view />
+    <MainLayout />
   </div>
 </template>
 <script>
+import MainLayout from "./layouts/MainLayout.vue";
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+    MainLayout
+  }
 }
 </script>
