@@ -10,7 +10,12 @@
               <span class="q-ml-sm">{{classes.teacherName}}</span>
             </q-card-section>
             <q-card-actions class="absolute bottom-right-30">
-              <DButton label="View Details" class="q-ml-auto" color="blue" />
+              <DButton
+                label="View Details"
+                class="q-ml-auto"
+                color="blue"
+                @click="routeToViewDetails(classes)"
+              />
               <DButton label="Enroll Now" class="q-ml-md" @click="openpopup(classes)" />
             </q-card-actions>
           </q-card>
@@ -105,6 +110,20 @@ export default {
     },
     closeEnrollNow() {
       this.EnrollNowModel = false;
+    },
+    routeToViewDetails(classes) {
+      this.$router.push({
+        name: "ViewDetails",
+        params: {
+          title: classes.title,
+          teacherName: classes.teacherName,
+          days: classes.days,
+          startTime: classes.startTime,
+          endTime: classes.endTime,
+          desc: classes.desc,
+          numberOfSeats: classes.numberOfSeats,
+        },
+      });
     },
   },
 };
