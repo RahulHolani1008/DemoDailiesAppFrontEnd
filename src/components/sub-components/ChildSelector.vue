@@ -23,34 +23,32 @@
       :active="link === student"
       @click="emitSelectedStudent(student)"
       active-class="bg-light-blue-12 text-white"
-      :key="student"
+      :key="student.id"
     >
       <q-item-section avatar>
         <q-avatar rounded>
           <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
         </q-avatar>
       </q-item-section>
-      <q-item-section>{{ student.name }}</q-item-section>
+      <q-item-section>{{ student.fullName }}</q-item-section>
     </q-item>
   </q-list>
 </template>
 <script>
 import { Component, Props } from "vue-property-decorator";
+import axios from "axios";
 export default {
   name: "ChildSelector",
   props: {
     addNew: {
       default: false,
     },
+    studentList: {
+      default: () => [],
+    },
   },
   data() {
     return {
-      studentList: [
-        { name: "Tarun Khanthuriya", email: "tkh@gmail.com" },
-        { name: "Kanchan Tiwari", email: "kanchant@gmail.com" },
-        { name: "Rishabh Songirkar", email: "rish.song@hotmail.com" },
-        { name: "Vinus Agrawal", email: "vinus@gmail.com" },
-      ],
       link: this.addNew ? "Add New" : null,
     };
   },

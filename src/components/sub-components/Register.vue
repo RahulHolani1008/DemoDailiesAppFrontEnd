@@ -142,7 +142,6 @@ export default {
           },
         })
           .then((response) => {
-            alert(JSON.stringify(response));
             if (response.status == 200) {
               this.$store.commit("changeUser", {
                 id: response.data.id,

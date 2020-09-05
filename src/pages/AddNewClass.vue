@@ -159,11 +159,8 @@ export default {
         },
       })
         .then((response) => {
-          alert(JSON.stringify(response));
           if (response.status == 200) {
-            alert(JSON.stringify(response));
           } else {
-            alert(JSON.stringify(response));
           }
         })
         .catch((err) => {

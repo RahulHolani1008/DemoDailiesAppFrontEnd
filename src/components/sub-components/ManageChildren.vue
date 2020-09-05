@@ -15,7 +15,12 @@
           <div class="row">
             <div class="row col-6">
               <div class="bg-light-blue-12 text-white fs--18 q-px-md q-py-sm col-12">Select a Child</div>
-              <ChildSelector class="col-12" :addNew="true" @click="getSelectedChild" />
+              <ChildSelector
+                class="col-12"
+                :addNew="true"
+                @click="getSelectedChild"
+                :studentList="studentList"
+              />
             </div>
             <div class="row col-6 q-pt-xl">
               <DTextField
@@ -40,6 +45,8 @@
                 color="white"
                 textColor="light-blue-12"
                 label="Remove Child"
+                type="button"
+                @click="removeChild"
               ></DButton>
             </div>
           </div>
@@ -80,6 +87,8 @@ export default {
       nameRules: [(val) => !!val || "Full Name is required"],
       userName: "",
       userEmail: "",
+      userId: null,
+      studentList: [],
     };
   },
   methods: {
@@ -87,9 +96,11 @@ export default {
       if (student == "Add New") {
         this.userName = "";
         this.userEmail = "";
+        this.userId = null;
       } else {
-        this.userName = student.name;
+        this.userName = student.fullName;
         this.userEmail = student.email;
+        this.userId = student.id;
       }
     },
     userEmailEntered(value) {
@@ -101,7 +112,94 @@ export default {
     closeManageGroups() {
       this.$emit("model");
     },
-    onSubmit() {},
+    onSubmit() {
+      if (this.userId) {
+        const response = axios({
+          method: "POST",
+          url: this.$store.state.apiBaseURL + "/dailies/student/enroll",
+          data: {
+            id: this.userId,
+            email: this.userEmail,
+            fullName: this.userName,
+            parentId: this.$store.state.user.id,
+          },
+          headers: {
+            "content-type": "application/json",
+          },
+        })
+          .then((response) => {
+            if (response.status == 200) {
+              this.studentList.forEach((student) => {
+                if (student.id == this.userId) {
+                  student.fullName = response.data.fullName;
+                  student.email = response.data.email;
+                }
+              });
+            } else {
+              console.log("error: ", response);
+            }
+          })
+          .catch((err) => {
+            console.log("error: ", err.message);
+          });
+      } else {
+        const response = axios({
+          method: "POST",
+          url: this.$store.state.apiBaseURL + "/dailies/student/enroll",
+          data: {
+            email: this.userEmail,
+            fullName: this.userName,
+            parentId: this.$store.state.user.id,
+          },
+          headers: {
+            "content-type": "application/json",
+          },
+        })
+          .then((response) => {
+            if (response.status == 200) {
+              this.studentList.push(response.data);
+            } else {
+              console.log("error: ", response);
+            }
+          })
+          .catch((err) => {
+            console.log("error: ", err.message);
+          });
+      }
+    },
+    removeChild() {
+      axios
+        .delete(
+          this.$store.state.apiBaseURL +
+            "/dailies/student/deletestudent/" +
+            this.userId
+        )
+        .then((response) => {
+          this.studentList = this.studentList.filter(
+            (student) => student.id != this.userId
+          );
+          this.userName = "";
+          this.userEmail = "";
+          this.userId = null;
+        })
+        .catch((err) => {
+          console.log("error", err);
+        });
+    },
+  },
+  created() {
+    axios
+      .get(
+        this.$store.state.apiBaseURL +
+          "/dailies/student/getStudents/" +
+          this.$store.state.user.id
+      )
+      .then((response) => {
+        this.studentList = response.data;
+      })
+      .catch((err) => {
+        console.log("error", err);
+      });
   },
 };
 </script>

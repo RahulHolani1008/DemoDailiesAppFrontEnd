@@ -24,13 +24,13 @@
 
       <q-card-section>
         <div class="bg-light-blue-12 text-white fs--18 q-px-md q-py-sm">Select a Child</div>
-        <ChildSelector />
+        <ChildSelector @click="getSelectedChild" :studentList="studentList" />
       </q-card-section>
       <q-separator />
 
       <q-card-actions align="right">
-        <q-btn v-close-popup flat color="primary" label="Cancel" @click="closePopup" />
-        <DButton v-close-popup flat color="primary" label="Add Student" @click="addStudent" />
+        <q-btn v-close-popup flat color="light-blue-12" label="Cancel" @click="closePopup" />
+        <DButton v-close-popup flat label="Add Student" @click="addStudent" />
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -39,6 +39,7 @@
 import ChildSelector from "./ChildSelector.vue";
 import DButton from "../base-components/DButton.vue";
 import { Component, Props } from "vue-property-decorator";
+import axios from "axios";
 export default {
   components: {
     ChildSelector,
@@ -60,15 +61,57 @@ export default {
     },
   },
   data() {
-    return {};
+    return {
+      studentList: [],
+      student: {},
+    };
   },
   methods: {
+    getSelectedChild(student) {
+      this.student = student;
+    },
     closePopup() {
       this.$emit("model");
     },
     addStudent() {
+      const response = axios({
+        method: "POST",
+        url: this.$store.state.apiBaseURL + "/dailies/student/enroll",
+        data: {
+          classId: this.selectedClass.id,
+          id: this.student.id,
+          parentId: this.$store.state.user.id,
+          email: this.student.email,
+          fullName: this.student.fullName,
+        },
+        headers: {
+          "content-type": "application/json",
+        },
+      })
+        .then((response) => {
+          if (response.status == 200) {
+          } else {
+          }
+        })
+        .catch((err) => {
+          console.log("error: ", err.message);
+        });
       this.closePopup();
     },
+  },
+  created() {
+    axios
+      .get(
+        this.$store.state.apiBaseURL +
+          "/dailies/student/getStudents/" +
+          this.$store.state.user.id
+      )
+      .then((response) => {
+        this.studentList = response.data;
+      })
+      .catch((err) => {
+        console.log("error", err);
+      });
   },
 };
 </script>

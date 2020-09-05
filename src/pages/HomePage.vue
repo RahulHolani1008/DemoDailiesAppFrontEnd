@@ -12,7 +12,7 @@
             class="rounded-borders q-card-custom q-pa-lg relative-position bg-black"
             v-for="teacher in teacherData"
             :key="teacher.id"
-            v-show="teacher.id == classes.teacherId || classes.id == 0"
+            v-show="teacher.id == classes.teacherId || (classes.id == 0 && isTeacher)"
           >
             <q-card-section class="text-h4 text-white">{{classes.className}}</q-card-section>
             <q-card-section class="fs--22 absolute left-25 bottom-100 text-white">

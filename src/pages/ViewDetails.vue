@@ -29,7 +29,7 @@
 
       <q-card-section>
         <div class="bg-light-blue-12 text-white fs--18 q-px-md q-py-sm">Select a Child</div>
-        <ChildSelector />
+        <ChildSelector :studentList="studentList" />
       </q-card-section>
       <q-card-actions align="right" class="q-pr-md">
         <DButton label="Add Student" />
@@ -42,6 +42,7 @@
 import DButton from "../components/base-components/DButton.vue";
 import ChildSelector from "../components/sub-components/ChildSelector.vue";
 import { Component, Props } from "vue-property-decorator";
+import axios from "axios";
 export default {
   props: {
     className: {
@@ -73,14 +74,23 @@ export default {
   name: "ViewDetails",
   data() {
     return {
-      studentList: [
-        "Tarun Khanthuriya",
-        "Kanchan Tiwari",
-        "Rishabh Songirkar",
-        "Vinus Agrawal",
-      ],
+      studentList: [],
     };
   },
   methods: {},
+  created() {
+    axios
+      .get(
+        this.$store.state.apiBaseURL +
+          "/dailies/student/getStudents/" +
+          this.$store.state.user.id
+      )
+      .then((response) => {
+        this.studentList = response.data;
+      })
+      .catch((err) => {
+        console.log("error", err);
+      });
+  },
 };
 </script>
