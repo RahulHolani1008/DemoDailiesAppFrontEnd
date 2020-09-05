@@ -7,7 +7,7 @@
             <q-icon
               name="close"
               v-close-popup
-              v-on:click="closeLogin"
+              v-on:click="closeManageGroups"
               style="font-size: 1.5rem; top: -20px; left: -20px; position: absolute;"
             />
             <div class="text-h5">Manage Children</div>
@@ -96,14 +96,11 @@ export default {
     userNameEntered(value) {
       this.userName = value;
     },
-    closeLogin() {
+    closeManageGroups() {
       this.$emit("model");
     },
     onSubmit() {
     },
-    closeLogin() {
-      this.loginModel = false;
-    }
   }
 };
 </script>

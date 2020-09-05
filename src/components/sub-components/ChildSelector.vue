@@ -1,5 +1,5 @@
 <template>
-    <q-list bordered>
+    <q-list bordered dense>
       <q-item clickable
             v-ripple 
             :active="link === 'Add New'"

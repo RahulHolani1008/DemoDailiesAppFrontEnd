@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="row q-px-xl q-pt-xl q-pb-none">
+    <div class="row q-px-xl q-pt-lg q-pb-none">
       <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 q-pa-md" 
       v-for="classes in classData" :key="classes.id"
       v-show="(classes.id == 0 && isTeacher) || (classes.id != 0)"

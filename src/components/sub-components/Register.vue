@@ -7,7 +7,7 @@
             <q-icon
               name="close"
               v-close-popup
-              v-on:click="closeLogin"
+              v-on:click="closeRegister"
               style="font-size: 1.5rem; top: -20px; left: -20px; position: absolute;"
             />
             <DToggleButton :stringOptions="toggleButtonData" @model="toggleSelected" />
@@ -42,8 +42,20 @@
           <q-card-section class="text-center light-blue-12 q-pa-none" v-on:click="loginModel = true">Already have an account? Login here.</q-card-section>
         </q-form>
       </q-card>
+      <q-dialog v-model="secondDialog" persistent transition-show="scale" transition-hide="scale">
+        <q-card class="text-black" style="width: 300px">
+          <q-card-section class="q-pt-md text-center">
+            {{
+            notificationMessage
+            }}
+          </q-card-section>
+          <q-card-actions align="center">
+            <BHButton label="OK" v-close-popup />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
     </q-dialog>
-    <Login :model="loginModel" @model="closeLogin" />
+    <Login :model="loginModel" @model="closeRegister" />
   </div>
 </template>
 <script>
@@ -70,6 +82,8 @@ export default {
   },
   data() {
     return {
+      secondDialog: false,
+      notificationMessage: "",
       toggleButtonData: [
         { label: "I'm a Teacher", value: "Teacher" },
         { label: "I'm a Parent", value: "Parent" }
@@ -103,23 +117,21 @@ export default {
     userEmailEntered(value) {
       this.userEmail = value;
     },
-    closeLogin() {
+    closeRegister() {
       this.$emit("model");
     },
     onSubmit() {
-      var userTypeId = this.toggleValue == "jobSeeker" ? 1 : 2;
+      const APIURL = this.toggleValue == "Teacher" ? "teacher" : "parent";
       if (this.toggleValue == "") {
         this.showDialog("Please select between JobSeeker and JobPoster");
       } else {
         const response = axios({
           method: "POST",
-          url: this.$store.state.apiBaseURL + "/user/login",
+          url: this.$store.state.apiBaseURL + "/dailies/" +APIURL+"/register",
           data: {
             emailAddress: this.userEmail,
             password: this.userPassword,
-            userTypeId: userTypeId,
-            ipAddress: this.$store.state.ipAddress,
-            deviceType: "System"
+            fullName : this.userName
           },
           headers: {
             "content-type": "application/json"
@@ -137,41 +149,34 @@ export default {
                 isJobPoster: this.userTypeId == "jobSeeker" ? false : true,
                 activeLogId: activeLogId
               });
-              localStorage.setItem(
-                "token",
-                JSON.stringify(response.data.data.jwtToken)
-              );
-
-              if (userTypeId == 2) {
-                this.$router.push("/JobPoster/PostJob");
-                this.$store.commit('changeisJobPoster', true);
-                this.$store.commit('changeisLoggedIn', true);
-                this.$store.commit('changeisLoggedOut',false);
-                this.$store.commit('changeisJobSeeker',false);
+              this.$store.commit('changeisLoggedIn', true);
+              if (this.toggleValue == "Teacher") {
+                this.$store.commit('changeIsTeacher',true);
               }
               else{
-                this.$store.commit('changeisJobPoster', false);
-                this.$store.commit('changeisLoggedIn', true);
-                this.$store.commit('changeisLoggedOut',false);
-                this.$store.commit('changeisJobSeeker',true);
+                this.$store.commit('changeIsTeacher',false);
               }
-              this.closeLogin();
+              this.closeRegister();
             } else {
               this.showDialog(
-                "Please check your email and password combination and try again"
+                "This email already exists with us. Please try logging in."
               );
             }
           })
           .catch(err => {
             this.showDialog(
-              "Please check your email and password combination and try again"
+              "This email already exists with us. Please try logging in."
             );
             console.log("error: ", err.message);
           });
       }
     },
-    closeLogin() {
+    closeRegister() {
       this.loginModel = false;
+    },
+    showDialog(message) {
+      this.secondDialog = true;
+      this.notificationMessage = message;
     }
   },
   computed: {
