@@ -5,14 +5,14 @@
         class="col-lg-4 col-md-6 col-sm-12 col-xs-12 q-pa-md"
         v-for="classes in classData"
         :key="classes.id"
-        v-show="(classes.id == 0 && isTeacher) || (classes.id != 0)"
+        v-show="(classes.id == 0 && isTeacher) || (classes.id != 0 && classes.countOfStudent != 0)"
       >
         <div :class="{'bg-images' : classes.id != 0}">
           <q-card
             class="rounded-borders q-card-custom q-pa-lg relative-position bg-black"
             v-for="teacher in teacherData"
             :key="teacher.id"
-            v-show="teacher.id == classes.teacherId || (classes.id == 0 && isTeacher)"
+            v-show="teacher.id == classes.teacherId || (classes.id == 0 && isTeacher && teacher.id == classes.teacherId)"
           >
             <q-card-section class="text-h4 text-white">{{classes.className}}</q-card-section>
             <q-card-section class="fs--22 absolute left-25 bottom-100 text-white">
@@ -53,9 +53,18 @@
         @click="ManageChildrenModel = true"
       />
     </div>
-    <EnrollNow :model="EnrollNowModel" @model="closeEnrollNow" :selectedClass="selectedClass" />
+    <EnrollNow
+      :model="EnrollNowModel"
+      @model="closeEnrollNow"
+      :selectedClass="selectedClass"
+      @enrolled="reduceCount"
+    />
     <Register :model="RegisterModel" @model="closeRegister" />
-    <ManageChildren :model="ManageChildrenModel" @model="closeManageChildren" />
+    <ManageChildren
+      :model="ManageChildrenModel"
+      @model="closeManageChildren"
+      @deleted="reduceCount"
+    />
   </div>
 </template>
 
@@ -95,6 +104,9 @@ export default {
       this.selectedClass = classes;
       this.EnrollNowModel = true;
     },
+    reduceCount() {
+      this.getData();
+    },
     addClass() {
       this.$router.push({
         name: "AddNewClass",
@@ -122,6 +134,14 @@ export default {
           )
           .then((response) => {
             console.log("Success " + JSON.stringify(response));
+            this.classData = [
+              {
+                id: 0,
+                className: "Add a class",
+                teacherName: this.$store.state.user.fullName,
+                teacherId: this.$store.state.user.id,
+              },
+            ];
             this.classData.push(...response.data);
           })
           .catch((err) => {
@@ -143,6 +163,7 @@ export default {
       axios
         .get(this.$store.state.apiBaseURL + "/dailies/teacher/getall")
         .then((response) => {
+          this.teacherData = [];
           response.data.forEach((teacher) => {
             this.teacherData.push({
               id: teacher.id,

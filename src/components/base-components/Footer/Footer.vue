@@ -16,34 +16,18 @@
     </div>
     <div class="q-px-sm">
       <ul style="list-style-type: none">
-        <li class="text-h6">Jobs by location</li>
-        <li>Jobs in New York City</li>
-        <li>Jobs in San Francisco</li>
-        <li>Jobs in Austin</li>
+        <li class="text-h6">Classes by days</li>
+        <li>Monday</li>
+        <li>Friday</li>
+        <li>Sunday</li>
       </ul>
     </div>
     <div class="q-px-sm">
       <ul style="list-style-type: none">
-        <li class="text-h6">Jobs by role</li>
-        <li>Delivery driver</li>
-        <li>Security</li>
-        <li>Administrative Assistant</li>
-      </ul>
-    </div>
-    <div class="q-px-sm">
-      <ul style="list-style-type: none">
-        <li class="text-h6">Jobs by role and location</li>
-        <li>Delivery driver jobs in San Francisco</li>
-        <li>Security Jobs in New York City</li>
-        <li>Administrative Assistant Jobs in Los Angeles</li>
-      </ul>
-    </div>
-    <div class="q-px-sm">
-      <ul style="list-style-type: none">
-        <li class="text-h6">Jobs by type</li>
-        <li>Full-time</li>
-        <li>Part-time</li>
-        <li>Contract</li>
+        <li class="text-h6">Classes by time</li>
+        <li>7:00 PM</li>
+        <li>7:00 AM</li>
+        <li>3:00 PM</li>
       </ul>
     </div>
     <div class="q-px-sm">

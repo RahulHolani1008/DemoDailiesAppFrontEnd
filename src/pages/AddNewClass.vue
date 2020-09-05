@@ -160,6 +160,7 @@ export default {
       })
         .then((response) => {
           if (response.status == 200) {
+            this.$router.push("/");
           } else {
           }
         })

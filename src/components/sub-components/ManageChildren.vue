@@ -181,6 +181,7 @@ export default {
           this.userName = "";
           this.userEmail = "";
           this.userId = null;
+          this.$emit("deleted");
         })
         .catch((err) => {
           console.log("error", err);

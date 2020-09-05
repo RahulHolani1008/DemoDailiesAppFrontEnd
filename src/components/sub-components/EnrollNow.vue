@@ -2,7 +2,7 @@
   <q-dialog v-model="model" persistent>
     <q-card class="rounded-borders my-card full-height" style="width: 434px;">
       <q-img src="https://cdn.quasar.dev/img/chicken-salad.jpg" style="height: 29vh;" />
-      <q-card-section class="text-h4">{{selectedClass.title}}</q-card-section>
+      <q-card-section class="text-h4">{{selectedClass.className}}</q-card-section>
       <q-card-section class="q-py-none fs--18">
         <span class="text-grey">Taken By</span>
         <span class="q-ml-sm">{{selectedClass.teacherName}}</span>
@@ -18,7 +18,7 @@
 
         <p class="q-mb-none">
           <span class="text-grey">Seats Available :</span>
-          <span class="q-ml-sm">{{selectedClass.numberOfSeats}}</span>
+          <span class="q-ml-sm">{{selectedClass.countOfStudent}}</span>
         </p>
       </q-card-section>
 
@@ -90,6 +90,7 @@ export default {
       })
         .then((response) => {
           if (response.status == 200) {
+            this.$emit("enrolled");
           } else {
           }
         })
@@ -98,20 +99,28 @@ export default {
         });
       this.closePopup();
     },
+    getData() {
+      axios
+        .get(
+          this.$store.state.apiBaseURL +
+            "/dailies/student/getStudents/" +
+            this.$store.state.user.id
+        )
+        .then((response) => {
+          this.studentList = response.data;
+        })
+        .catch((err) => {
+          console.log("error", err);
+        });
+    },
   },
   created() {
-    axios
-      .get(
-        this.$store.state.apiBaseURL +
-          "/dailies/student/getStudents/" +
-          this.$store.state.user.id
-      )
-      .then((response) => {
-        this.studentList = response.data;
-      })
-      .catch((err) => {
-        console.log("error", err);
-      });
+    this.getData();
+  },
+  watch: {
+    model: function (value) {
+      this.getData();
+    },
   },
 };
 </script>

@@ -28,11 +28,12 @@
       </q-card-section>
 
       <q-card-section>
-        <div class="bg-light-blue-12 text-white fs--18 q-px-md q-py-sm">Select a Child</div>
-        <ChildSelector :studentList="studentList" />
+        <div class="bg-light-blue-12 text-white fs--18 q-px-md q-py-sm q-mt-md">Select a Child</div>
+        <ChildSelector :studentList="studentList" @click="getSelectedChild" />
       </q-card-section>
       <q-card-actions align="right" class="q-pr-md">
-        <DButton label="Add Student" />
+        <DButton label="Add Student" @click="addStudent" v-if="!this.$store.state.isTeacher" />
+        <DButton label="Remove Student" @click="removeStudent" v-else />
       </q-card-actions>
     </div>
   </div>
@@ -47,6 +48,9 @@ export default {
   props: {
     className: {
       default: "",
+    },
+    id: {
+      default: 0,
     },
     teacherName: {
       default: "",
@@ -74,23 +78,90 @@ export default {
   name: "ViewDetails",
   data() {
     return {
+      student: {},
       studentList: [],
     };
   },
-  methods: {},
-  created() {
-    axios
-      .get(
-        this.$store.state.apiBaseURL +
-          "/dailies/student/getStudents/" +
-          this.$store.state.user.id
-      )
-      .then((response) => {
-        this.studentList = response.data;
+  methods: {
+    getSelectedChild(student) {
+      this.student = student;
+    },
+    addStudent() {
+      const response = axios({
+        method: "POST",
+        url: this.$store.state.apiBaseURL + "/dailies/student/enroll",
+        data: {
+          classId: this.id,
+          id: this.student.id,
+          parentId: this.$store.state.user.id,
+          email: this.student.email,
+          fullName: this.student.fullName,
+        },
+        headers: {
+          "content-type": "application/json",
+        },
       })
-      .catch((err) => {
-        console.log("error", err);
-      });
+        .then((response) => {
+          if (response.status == 200) {
+            this.countOfStudent -= 1;
+            if (this.countOfStudent == 0) {
+              this.$router.push("/");
+            }
+          } else {
+          }
+        })
+        .catch((err) => {
+          console.log("error: ", err.message);
+        });
+      this.closePopup();
+    },
+    removeStudent() {
+      axios
+        .delete(
+          this.$store.state.apiBaseURL +
+            "/dailies/student/deletestudent/" +
+            this.id +
+            "/" +
+            this.student.id
+        )
+        .then((response) => {
+          this.studentList = this.studentList.filter(
+            (student) => student.id != this.student.id
+          );
+        })
+        .catch((err) => {
+          console.log("error", err);
+        });
+    },
+  },
+  created() {
+    if (this.$store.state.isTeacher) {
+      axios
+        .get(
+          this.$store.state.apiBaseURL +
+            "/dailies/student/getStudents/" +
+            this.id
+        )
+        .then((response) => {
+          this.studentList = response.data;
+        })
+        .catch((err) => {
+          console.log("error", err);
+        });
+    } else {
+      axios
+        .get(
+          this.$store.state.apiBaseURL +
+            "/dailies/student/getStudents/" +
+            this.$store.state.user.id
+        )
+        .then((response) => {
+          this.studentList = response.data;
+        })
+        .catch((err) => {
+          console.log("error", err);
+        });
+    }
   },
 };
 </script>
