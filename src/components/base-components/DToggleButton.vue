@@ -15,19 +15,19 @@ export default {
     stringOptions: {
       default: [
         { label: "One", value: "one" },
-        { label: "Two", value: "two" }
-      ]
-    }
+        { label: "Two", value: "two" },
+      ],
+    },
   },
   data() {
     return {
-      model: ""
+      model: "",
     };
   },
   watch: {
-    model: function(value) {
+    model: function (value) {
       this.$emit("model", value);
-    }
-  }
+    },
+  },
 };
 </script>

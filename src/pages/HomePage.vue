@@ -1,12 +1,14 @@
 <template>
   <div>
     <div class="row q-px-xl q-pt-lg q-pb-none">
-      <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 q-pa-md" 
-      v-for="classes in classData" :key="classes.id"
-      v-show="(classes.id == 0 && isTeacher) || (classes.id != 0)"
+      <div
+        class="col-lg-4 col-md-6 col-sm-12 col-xs-12 q-pa-md"
+        v-for="classes in classData"
+        :key="classes.id"
+        v-show="(classes.id == 0 && isTeacher) || (classes.id != 0)"
       >
         <div :class="{'bg-images' : classes.id != 0}">
-          <q-card class="rounded-borders  q-card-custom q-pa-lg relative-position bg-black">
+          <q-card class="rounded-borders q-card-custom q-pa-lg relative-position bg-black">
             <q-card-section class="text-h4 text-white">{{classes.title}}</q-card-section>
             <q-card-section class="fs--22 absolute left-25 bottom-100 text-white">
               <span class="text-grey">By</span>
@@ -18,8 +20,15 @@
                 class="q-ml-auto"
                 color="light-blue-12"
                 @click="routeToViewDetails(classes)"
+                v-if="!((classes.id == 0 && isTeacher))"
               />
-              <DButton label="Enroll Now" class="q-ml-sm q-mr-none" @click="openpopup(classes)" v-if="!isTeacher"/>
+              <DButton label="Add class" class="q-ml-auto" color="light-blue-12" @click v-else />
+              <DButton
+                label="Enroll Now"
+                class="q-ml-sm q-mr-none"
+                @click="openpopup(classes)"
+                v-if="!isTeacher"
+              />
             </q-card-actions>
           </q-card>
         </div>
@@ -27,7 +36,11 @@
     </div>
     <div class="row q-pb-sm" v-if="!isTeacher">
       <div class="col-xs-3 col-sm-4 col-md-5 col-lg-10"></div>
-      <DButton label="Manage Children" class="q-my-md justify-end col-xs-8 col-md-7 col-lg-2 q-pl-lg" @click="ManageChildrenModel = true" />
+      <DButton
+        label="Manage Children"
+        class="q-my-md justify-end col-xs-8 col-md-7 col-lg-2 q-pl-lg"
+        @click="ManageChildrenModel = true"
+      />
     </div>
     <EnrollNow :model="EnrollNowModel" @model="closeEnrollNow" :selectedClass="selectedClass" />
     <Register :model="RegisterModel" @model="closeRegister" />
@@ -41,12 +54,13 @@ import EnrollNow from "../components/sub-components/EnrollNow.vue";
 import Register from "../components/sub-components/Register.vue";
 import ManageChildren from "../components/sub-components/ManageChildren.vue";
 import { Component, Props } from "vue-property-decorator";
+import axios from "axios";
 export default {
   components: {
     DButton,
     EnrollNow,
     Register,
-    ManageChildren
+    ManageChildren,
   },
   name: "HomePage",
   data() {
@@ -55,7 +69,7 @@ export default {
         {
           id: 0,
           title: "Add a class",
-          teacherName: this.$store.state.user.fullName
+          teacherName: this.$store.state.user.fullName,
         },
         {
           id: 1,
@@ -127,7 +141,7 @@ export default {
       EnrollNowModel: false,
       RegisterModel: false,
       selectedClass: {},
-      ManageChildrenModel: false
+      ManageChildrenModel: false,
     };
   },
   methods: {
@@ -143,6 +157,23 @@ export default {
     },
     closeManageChildren() {
       this.ManageChildrenModel = false;
+    },
+    getData() {
+      if (this.isTeacher) {
+        axios
+          .get(
+            this.$store.state.apiBaseURL +
+              "/dailies/class/getclass/" +
+              this.$store.state.user.id
+          )
+          .then((response) => {
+            console.log("Success " + JSON.stringify(response));
+          })
+          .catch((err) => {
+            console.log("error", err);
+          });
+      } else {
+      }
     },
     routeToViewDetails(classes) {
       this.$router.push({
@@ -160,14 +191,31 @@ export default {
       });
     },
   },
+  created() {
+    this.getData();
+  },
+  watch: {
+    isLoggedIn: function (value) {
+      this.getData();
+    },
+  },
   computed: {
     isTeacher: {
       get() {
-        this.$store.state.isTeacher;
+        return this.$store.state.isTeacher;
       },
       set(value) {
-        this.$store.commit("changeIsTeacher",value)
-      }
-    }
-  }};
+        this.$store.commit("changeIsTeacher", value);
+      },
+    },
+    isLoggedIn: {
+      get() {
+        return this.$store.state.isLoggedIn;
+      },
+      set(value) {
+        this.$store.commit("changeIsLoggedIn", value);
+      },
+    },
+  },
+};
 </script>

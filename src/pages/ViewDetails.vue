@@ -32,7 +32,7 @@
         <ChildSelector />
       </q-card-section>
       <q-card-actions align="right" class="q-pr-md">
-        <DButton label="Add Student"/>
+        <DButton label="Add Student" />
       </q-card-actions>
     </div>
   </div>
@@ -68,7 +68,7 @@ export default {
   },
   components: {
     DButton,
-    ChildSelector
+    ChildSelector,
   },
   name: "ViewDetails",
   data() {

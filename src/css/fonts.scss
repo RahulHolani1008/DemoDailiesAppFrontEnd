@@ -1,34 +1,39 @@
 @font-face {
-    font-family: Futura;
-    src: url('../assets/Futura/FuturaLT-Bold.woff');
-    font-weight: 800;
-  }
-  @font-face {
-    font-family: Futura;
-    src: url('../assets/Futura/FuturaLT-Book.woff');
-    font-weight: 200;
-  }
-  @font-face {
-    font-family: Futura;
-    src: url('../assets/Futura/FuturaLT.woff');
-    font-weight: 400;
-  }
-  @font-face {
-    font-family: Futura;
-    src: url('../assets/Futura/FuturaLT-Heavy.woff');
-    font-weight: 500;
-  }
-  @font-face {
-    font-family: Futura;
-    src: url('../assets/Futura/FuturaLT-ExtraBold.woff');
-    font-weight: 1000;
-  }
-  @font-face {
-    font-family: Futura;
-    src: url('../assets/Futura/FuturaLT-Light.woff');
-    font-weight: 100;
-  }
+  font-family: Futura;
+  src: url('../assets/Futura/FuturaLT-Bold.woff');
+  font-weight: 800;
+}
 
-  body {
-    font-family: Futura !important;
-  }
+@font-face {
+  font-family: Futura;
+  src: url('../assets/Futura/FuturaLT-Book.woff');
+  font-weight: 200;
+}
+
+@font-face {
+  font-family: Futura;
+  src: url('../assets/Futura/FuturaLT.woff');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: Futura;
+  src: url('../assets/Futura/FuturaLT-Heavy.woff');
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: Futura;
+  src: url('../assets/Futura/FuturaLT-ExtraBold.woff');
+  font-weight: 1000;
+}
+
+@font-face {
+  font-family: Futura;
+  src: url('../assets/Futura/FuturaLT-Light.woff');
+  font-weight: 100;
+}
+
+body {
+  font-family: Futura !important;
+}

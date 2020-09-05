@@ -32,7 +32,10 @@
           <q-card-actions align="center">
             <DButton label="Login" type="submit" />
           </q-card-actions>
-          <q-card-section class="text-center light-blue-12 q-pa-none" v-on:click="closeLogin">Don't have an account? Register here.</q-card-section>
+          <q-card-section
+            class="text-center light-blue-12 q-pa-none"
+            v-on:click="closeLogin"
+          >Don't have an account? Register here.</q-card-section>
         </q-form>
       </q-card>
     </q-dialog>
@@ -53,29 +56,30 @@ export default {
     DTextField,
     DButton,
     DToggleButton,
-    Login
+    Login,
   },
   props: {
     model: {
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
       toggleButtonData: [
         { label: "I'm a Teacher", value: "Teacher" },
-        { label: "I'm a Parent", value: "Parent" }
+        { label: "I'm a Parent", value: "Parent" },
       ],
       emailRegEx: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
       emailRules: [
-        val => !!val || "Email is required",
-        val => this.emailRegEx.test(val) || "Enter a valid email address"
+        (val) => !!val || "Email is required",
+        (val) => this.emailRegEx.test(val) || "Enter a valid email address",
       ],
       passwordRules: [
-        val => !!val || "Password is required",
-        val => val.length >= 6 || "Password length must be atleast 6 characters"
+        (val) => !!val || "Password is required",
+        (val) =>
+          val.length >= 6 || "Password length must be atleast 6 characters",
       ],
-      userPassword: ""
+      userPassword: "",
     };
   },
   methods: {
@@ -104,13 +108,13 @@ export default {
             password: this.userPassword,
             userTypeId: userTypeId,
             ipAddress: this.$store.state.ipAddress,
-            deviceType: "System"
+            deviceType: "System",
           },
           headers: {
-            "content-type": "application/json"
-          }
+            "content-type": "application/json",
+          },
         })
-          .then(response => {
+          .then((response) => {
             let responseMessage = response.data.message;
             let activeLogId = response.data.data.activeLogId;
             if (response.data.data.userId != 0) {
@@ -120,7 +124,7 @@ export default {
                 password: this.userPassword,
                 isJobSeeker: userTypeId == "jobSeeker" ? true : false,
                 isJobPoster: this.userTypeId == "jobSeeker" ? false : true,
-                activeLogId: activeLogId
+                activeLogId: activeLogId,
               });
               localStorage.setItem(
                 "token",
@@ -129,16 +133,15 @@ export default {
 
               if (userTypeId == 2) {
                 this.$router.push("/JobPoster/PostJob");
-                this.$store.commit('changeisJobPoster', true);
-                this.$store.commit('changeisLoggedIn', true);
-                this.$store.commit('changeisLoggedOut',false);
-                this.$store.commit('changeisJobSeeker',false);
-              }
-              else{
-                this.$store.commit('changeisJobPoster', false);
-                this.$store.commit('changeisLoggedIn', true);
-                this.$store.commit('changeisLoggedOut',false);
-                this.$store.commit('changeisJobSeeker',true);
+                this.$store.commit("changeisJobPoster", true);
+                this.$store.commit("changeisLoggedIn", true);
+                this.$store.commit("changeisLoggedOut", false);
+                this.$store.commit("changeisJobSeeker", false);
+              } else {
+                this.$store.commit("changeisJobPoster", false);
+                this.$store.commit("changeisLoggedIn", true);
+                this.$store.commit("changeisLoggedOut", false);
+                this.$store.commit("changeisJobSeeker", true);
               }
               this.closeLogin();
             } else {
@@ -147,7 +150,7 @@ export default {
               );
             }
           })
-          .catch(err => {
+          .catch((err) => {
             this.showDialog(
               "Please check your email and password combination and try again"
             );
@@ -156,7 +159,7 @@ export default {
       }
     },
     forgotPassword() {},
-    showDialog(message) {}
+    showDialog(message) {},
   },
   computed: {
     userEmail: {
@@ -165,7 +168,7 @@ export default {
       },
       set(value) {
         this.$store.state.user.email = value;
-      }
+      },
     },
     toggleValue: {
       get() {
@@ -182,8 +185,8 @@ export default {
         } else {
           this.$store.state.isTeacher = false;
         }
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>

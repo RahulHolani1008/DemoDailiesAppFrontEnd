@@ -1,6 +1,6 @@
 <template>
   <q-dialog v-model="model" persistent>
-    <q-card class="rounded-borders  my-card full-height" style="width: 434px;">
+    <q-card class="rounded-borders my-card full-height" style="width: 434px;">
       <q-img src="https://cdn.quasar.dev/img/chicken-salad.jpg" style="height: 29vh;" />
       <q-card-section class="text-h4">{{selectedClass.title}}</q-card-section>
       <q-card-section class="q-py-none fs--18">
@@ -30,7 +30,7 @@
 
       <q-card-actions align="right">
         <q-btn v-close-popup flat color="primary" label="Cancel" @click="closePopup" />
-        <DButton v-close-popup flat color="primary" label="Add Student" @click="addStudent"/>
+        <DButton v-close-popup flat color="primary" label="Add Student" @click="addStudent" />
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -42,7 +42,7 @@ import { Component, Props } from "vue-property-decorator";
 export default {
   components: {
     ChildSelector,
-    DButton
+    DButton,
   },
   props: {
     model: {
@@ -60,9 +60,7 @@ export default {
     },
   },
   data() {
-    return {
-      
-    };
+    return {};
   },
   methods: {
     closePopup() {
@@ -70,7 +68,7 @@ export default {
     },
     addStudent() {
       this.closePopup();
-    }
+    },
   },
 };
 </script>

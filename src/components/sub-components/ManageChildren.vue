@@ -19,23 +19,28 @@
             </div>
             <div class="row col-6 q-pt-xl">
               <DTextField
-            class="q-mx-auto col-12 q-pl-lg"
-            label="Full Name"
-            type="text"
-            :model="userName"
-            @model="userNameEntered"
-            :rules="nameRules"
-          />
-          <DTextField
-            class="q-mx-auto col-12 q-pl-lg"
-            label="Email"
-            type="email"
-            :model="userEmail"
-            @model="userEmailEntered"
-            :rules="emailRules"
-          />
-          <DButton class="q-mx-auto" label="Submit"></DButton>
-          <DButton class="q-mx-auto q-pt-sm" color="white" textColor="light-blue-12" label="Remove Child"></DButton>
+                class="q-mx-auto col-12 q-pl-lg"
+                label="Full Name"
+                type="text"
+                :model="userName"
+                @model="userNameEntered"
+                :rules="nameRules"
+              />
+              <DTextField
+                class="q-mx-auto col-12 q-pl-lg"
+                label="Email"
+                type="email"
+                :model="userEmail"
+                @model="userEmailEntered"
+                :rules="emailRules"
+              />
+              <DButton class="q-mx-auto" label="Submit"></DButton>
+              <DButton
+                class="q-mx-auto q-pt-sm"
+                color="white"
+                textColor="light-blue-12"
+                label="Remove Child"
+              ></DButton>
             </div>
           </div>
         </q-form>
@@ -58,34 +63,31 @@ export default {
     DTextField,
     DButton,
     ChildSelector,
-    Login
+    Login,
   },
   props: {
     model: {
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
       emailRegEx: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
       emailRules: [
-        val => !!val || "Email is required",
-        val => this.emailRegEx.test(val) || "Enter a valid email address"
+        (val) => !!val || "Email is required",
+        (val) => this.emailRegEx.test(val) || "Enter a valid email address",
       ],
-      nameRules: [
-        val => !!val || "Full Name is required"
-      ],
+      nameRules: [(val) => !!val || "Full Name is required"],
       userName: "",
-      userEmail: ""
+      userEmail: "",
     };
   },
   methods: {
     getSelectedChild(student) {
-      if(student == "Add New") {
+      if (student == "Add New") {
         this.userName = "";
         this.userEmail = "";
-      }
-      else {
+      } else {
         this.userName = student.name;
         this.userEmail = student.email;
       }
@@ -99,8 +101,7 @@ export default {
     closeManageGroups() {
       this.$emit("model");
     },
-    onSubmit() {
-    },
-  }
+    onSubmit() {},
+  },
 };
 </script>

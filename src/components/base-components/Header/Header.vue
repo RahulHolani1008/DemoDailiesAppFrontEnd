@@ -3,9 +3,9 @@
     <q-toolbar>
       <q-toolbar-title>
         <router-link class="text-decoration-none cursor-pointer text-light-blue-12" to="/">Dailies</router-link>
-      </q-toolbar-title>
-      <DButton label="Register" @click="registerOpen = true" v-if="!this.$store.state.isLoggedIn"/>
-      <DButton label="Log Out" @click="logOutOpen = true" v-if="this.$store.state.isLoggedIn"/>
+      </q-toolbar-title>"
+      <DButton label="Register" @click="registerOpen = true" v-if="!this.$store.state.isLoggedIn" />
+      <DButton label="Log Out" @click="logOutOpen = true" v-if="this.$store.state.isLoggedIn" />
       <Register :model="registerOpen" @model="closeRegister" />
       <LogOut :model="logOutOpen" @model="closeLogOut" />
     </q-toolbar>
@@ -21,12 +21,12 @@ export default {
   components: {
     DButton,
     Register,
-    LogOut
+    LogOut,
   },
   data() {
     return {
       registerOpen: false,
-      logOutOpen: false
+      logOutOpen: false,
     };
   },
   methods: {

@@ -39,7 +39,10 @@
           <q-card-actions align="center">
             <DButton label="Register" type="submit" />
           </q-card-actions>
-          <q-card-section class="text-center light-blue-12 q-pa-none" v-on:click="loginModel = true">Already have an account? Login here.</q-card-section>
+          <q-card-section
+            class="text-center light-blue-12 q-pa-none"
+            v-on:click="loginModel = true"
+          >Already have an account? Login here.</q-card-section>
         </q-form>
       </q-card>
       <q-dialog v-model="secondDialog" transition-show="scale" transition-hide="scale">
@@ -73,12 +76,12 @@ export default {
     DTextField,
     DButton,
     DToggleButton,
-    Login
+    Login,
   },
   props: {
     model: {
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
@@ -87,20 +90,19 @@ export default {
       toggleValue: "",
       toggleButtonData: [
         { label: "I'm a Teacher", value: "Teacher" },
-        { label: "I'm a Parent", value: "Parent" }
+        { label: "I'm a Parent", value: "Parent" },
       ],
       emailRegEx: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
       emailRules: [
-        val => !!val || "Email is required",
-        val => this.emailRegEx.test(val) || "Enter a valid email address"
+        (val) => !!val || "Email is required",
+        (val) => this.emailRegEx.test(val) || "Enter a valid email address",
       ],
       passwordRules: [
-        val => !!val || "Password is required",
-        val => val.length >= 6 || "Password length must be atleast 6 characters"
+        (val) => !!val || "Password is required",
+        (val) =>
+          val.length >= 6 || "Password length must be atleast 6 characters",
       ],
-      nameRules: [
-        val => !!val || "Full Name is required"
-      ],
+      nameRules: [(val) => !!val || "Full Name is required"],
       userPassword: "",
       loginModel: false,
     };
@@ -128,25 +130,29 @@ export default {
       } else {
         const response = axios({
           method: "POST",
-          url: this.$store.state.apiBaseURL + "/dailies/" +APIURL+"/register",
+          url:
+            this.$store.state.apiBaseURL + "/dailies/" + APIURL + "/register",
           data: {
             email: this.userEmail,
             password: this.userPassword,
-            fullName : this.userName
+            fullName: this.userName,
           },
           headers: {
-            "content-type": "application/json"
-          }
+            "content-type": "application/json",
+          },
         })
-          .then(response => {
-            alert(JSON.stringify(response))
-            if(response.status == 200) {
+          .then((response) => {
+            alert(JSON.stringify(response));
+            if (response.status == 200) {
               this.$store.commit("changeUser", {
                 id: response.data.id,
                 fullName: response.data.fullName,
-                email: response.data.email
-              })
-              this.$store.commit("changeIsTeacher", this.toggleValue == "Teacher" ? true : false);
+                email: response.data.email,
+              });
+              this.$store.commit(
+                "changeIsTeacher",
+                this.toggleValue == "Teacher" ? true : false
+              );
               this.$store.commit("changeIsLoggedIn", true);
               this.closeRegister();
             } else {
@@ -155,7 +161,7 @@ export default {
               );
             }
           })
-          .catch(err => {
+          .catch((err) => {
             this.showDialog(
               "Email already exists with us. Please try logging in."
             );
@@ -169,7 +175,7 @@ export default {
     showDialog(message) {
       this.secondDialog = true;
       this.notificationMessage = message;
-    }
+    },
   },
   computed: {
     userEmail: {
@@ -178,7 +184,7 @@ export default {
       },
       set(value) {
         this.$store.state.user.email = value;
-      }
+      },
     },
     userName: {
       get() {
@@ -186,8 +192,8 @@ export default {
       },
       set(value) {
         this.$store.state.user.fullName = value;
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>
