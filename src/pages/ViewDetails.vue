@@ -5,8 +5,8 @@
     </div>
 
     <div class="col-lg-6 col-md-7 col-xs-12 q-pl-md q-pr-lg">
-      <q-card-section class="text-h4">{{title}}</q-card-section>
-      <q-card-section class="q-py-none q-pb-sm text-body2 text-grey">{{desc}}</q-card-section>
+      <q-card-section class="text-h4">{{className}}</q-card-section>
+      <q-card-section class="q-py-none q-pb-sm text-body2 text-grey">{{description}}</q-card-section>
       <q-card-section class="q-py-none fs--18">
         <p class="d-inline-block q-mb-none">
           <span class="text-grey">Taken By</span>
@@ -15,11 +15,11 @@
 
         <p class="d-inline-block float-right q-ml-lg q-mb-none">
           <span class="text-grey">Seats Available :</span>
-          <span class="q-ml-sm">{{numberOfSeats}}</span>
+          <span class="q-ml-sm">{{countOfStudent}}</span>
         </p>
 
         <p class="d-inline-block float-right q-mb-none">
-          <span class>{{days}}</span>
+          <span class>{{daysOfWeek}}</span>
           <span class="q-ml-sm text-grey">from</span>
           <span class="q-ml-sm">{{startTime}}</span>
           <span class="q-ml-sm text-grey">to</span>
@@ -44,13 +44,13 @@ import ChildSelector from "../components/sub-components/ChildSelector.vue";
 import { Component, Props } from "vue-property-decorator";
 export default {
   props: {
-    title: {
+    className: {
       default: "",
     },
     teacherName: {
       default: "",
     },
-    days: {
+    daysOfWeek: {
       default: "",
     },
     startTime: {
@@ -59,10 +59,10 @@ export default {
     endTime: {
       default: "",
     },
-    desc: {
+    description: {
       default: "",
     },
-    numberOfSeats: {
+    countOfStudent: {
       default: null,
     },
   },

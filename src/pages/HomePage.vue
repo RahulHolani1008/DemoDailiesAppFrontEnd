@@ -8,21 +8,32 @@
         v-show="(classes.id == 0 && isTeacher) || (classes.id != 0)"
       >
         <div :class="{'bg-images' : classes.id != 0}">
-          <q-card class="rounded-borders q-card-custom q-pa-lg relative-position bg-black">
-            <q-card-section class="text-h4 text-white">{{classes.title}}</q-card-section>
+          <q-card
+            class="rounded-borders q-card-custom q-pa-lg relative-position bg-black"
+            v-for="teacher in teacherData"
+            :key="teacher.id"
+            v-show="teacher.id == classes.teacherId || classes.id == 0"
+          >
+            <q-card-section class="text-h4 text-white">{{classes.className}}</q-card-section>
             <q-card-section class="fs--22 absolute left-25 bottom-100 text-white">
               <span class="text-grey">By</span>
-              <span class="q-ml-sm">{{classes.teacherName}}</span>
+              <span class="q-ml-sm">{{teacher.fullName}}</span>
             </q-card-section>
             <q-card-actions class="absolute bottom-right-30">
               <DButton
                 label="View Details"
                 class="q-ml-auto"
                 color="light-blue-12"
-                @click="routeToViewDetails(classes)"
+                @click="routeToViewDetails(classes, teacher)"
                 v-if="!((classes.id == 0 && isTeacher))"
               />
-              <DButton label="Add class" class="q-ml-auto" color="light-blue-12" @click v-else />
+              <DButton
+                label="Add class"
+                class="q-ml-auto"
+                color="light-blue-12"
+                @click="addClass"
+                v-else
+              />
               <DButton
                 label="Enroll Now"
                 class="q-ml-sm q-mr-none"
@@ -68,86 +79,26 @@ export default {
       classData: [
         {
           id: 0,
-          title: "Add a class",
+          className: "Add a class",
           teacherName: this.$store.state.user.fullName,
-        },
-        {
-          id: 1,
-          title: "Class IX A",
-          teacherName: "Maximillan",
-          days: "Mon - Wed",
-          startTime: "7 PM",
-          endTime: "8 PM",
-          desc:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-          numberOfSeats: 2,
-        },
-        {
-          id: 2,
-          title: "Class IX b",
-          teacherName: "Avnish Parmar",
-          days: "Mon - Wed",
-          startTime: "7 PM",
-          endTime: "8 PM",
-          desc:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-          numberOfSeats: 3,
-        },
-        {
-          id: 3,
-          title: "Class IX c",
-          teacherName: "John Doe",
-          days: "Mon - Wed",
-          startTime: "7 PM",
-          endTime: "8 PM",
-          desc:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-          numberOfSeats: 1,
-        },
-        {
-          id: 4,
-          title: "Class IX d",
-          teacherName: "Rahul Holani",
-          days: "Mon - Wed",
-          startTime: "7 PM",
-          endTime: "8 PM",
-          desc:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-          numberOfSeats: 2,
-        },
-        {
-          id: 5,
-          title: "Class IX e",
-          teacherName: "Lorem Ipsum",
-          days: "Mon - Wed",
-          startTime: "7 PM",
-          endTime: "8 PM",
-          desc:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-          numberOfSeats: 4,
-        },
-        {
-          id: 6,
-          title: "Class IX f",
-          teacherName: "Maximillan",
-          days: "Mon - Wed",
-          startTime: "7 PM",
-          endTime: "8 PM",
-          desc:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-          numberOfSeats: 1,
         },
       ],
       EnrollNowModel: false,
       RegisterModel: false,
       selectedClass: {},
       ManageChildrenModel: false,
+      teacherData: [],
     };
   },
   methods: {
     openpopup(classes) {
       this.selectedClass = classes;
       this.EnrollNowModel = true;
+    },
+    addClass() {
+      this.$router.push({
+        name: "AddNewClass",
+      });
     },
     closeEnrollNow() {
       this.EnrollNowModel = false;
@@ -157,6 +108,9 @@ export default {
     },
     closeManageChildren() {
       this.ManageChildrenModel = false;
+    },
+    closeAddNewClass() {
+      this.addNewClassModel = false;
     },
     getData() {
       if (this.isTeacher) {
@@ -168,25 +122,50 @@ export default {
           )
           .then((response) => {
             console.log("Success " + JSON.stringify(response));
+            this.classData.push(...response.data);
           })
           .catch((err) => {
             console.log("error", err);
           });
       } else {
+        axios
+          .get(
+            this.$store.state.apiBaseURL + "/dailies/class/getavailableclasses"
+          )
+          .then((response) => {
+            console.log("Success " + JSON.stringify(response));
+            this.classData = response.data;
+          })
+          .catch((err) => {
+            console.log("error", err);
+          });
       }
+      axios
+        .get(this.$store.state.apiBaseURL + "/dailies/teacher/getall")
+        .then((response) => {
+          response.data.forEach((teacher) => {
+            this.teacherData.push({
+              id: teacher.id,
+              fullName: teacher.fullName,
+            });
+          });
+        })
+        .catch((err) => {
+          console.log("error", err);
+        });
     },
-    routeToViewDetails(classes) {
+    routeToViewDetails(classes, teacher) {
       this.$router.push({
         name: "ViewDetails",
         params: {
           id: classes.id,
-          title: classes.title,
-          teacherName: classes.teacherName,
-          days: classes.days,
+          className: classes.className,
+          teacherName: teacher.fullName,
+          daysOfWeek: classes.daysOfWeek,
           startTime: classes.startTime,
           endTime: classes.endTime,
-          desc: classes.desc,
-          numberOfSeats: classes.numberOfSeats,
+          description: classes.description,
+          countOfStudent: classes.countOfStudent,
         },
       });
     },

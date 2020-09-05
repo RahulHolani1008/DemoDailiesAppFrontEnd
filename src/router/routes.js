@@ -1,6 +1,4 @@
-
-const routes = [
-  {
+const routes = [{
     path: '/',
     component: () => import('pages/HomePage.vue'),
   },
@@ -10,8 +8,12 @@ const routes = [
     props: true,
     name: "ViewDetails"
   },
-  // Always leave this as last one,
-  // but you can also remove it
+  {
+    path: '/Teacher/AddClass',
+    component: () => import('pages/AddNewClass.vue'),
+    name: "AddNewClass"
+  },
+  // Always leave this as last one
   {
     path: '*',
     component: () => import('pages/Error404.vue')

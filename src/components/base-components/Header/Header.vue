@@ -3,7 +3,7 @@
     <q-toolbar>
       <q-toolbar-title>
         <router-link class="text-decoration-none cursor-pointer text-light-blue-12" to="/">Dailies</router-link>
-      </q-toolbar-title>"
+      </q-toolbar-title>
       <DButton label="Register" @click="registerOpen = true" v-if="!this.$store.state.isLoggedIn" />
       <DButton label="Log Out" @click="logOutOpen = true" v-if="this.$store.state.isLoggedIn" />
       <Register :model="registerOpen" @model="closeRegister" />
