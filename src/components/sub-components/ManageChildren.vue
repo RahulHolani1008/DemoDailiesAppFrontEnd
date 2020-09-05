@@ -1,7 +1,7 @@
 <template>
   <div>
     <q-dialog v-model="model" persistent>
-      <q-card class="rounded-borders  full-width q-py-xl q-px-xl">
+      <q-card class="rounded-borders q-py-xl q-px-xl">
         <q-form @submit="onSubmit" class="q-gutter-md">
           <q-card-section class="text-center">
             <q-icon
@@ -15,9 +15,9 @@
           <div class="row">
             <div class="row col-6">
               <div class="bg-light-blue-12 text-white fs--18 q-px-md q-py-sm col-12">Select a Child</div>
-              <ChildSelector class="col-12" :addNew="true" />
+              <ChildSelector class="col-12" :addNew="true" @click="getSelectedChild" />
             </div>
-            <div class="row col-6">
+            <div class="row col-6 q-pt-xl">
               <DTextField
             class="q-mx-auto col-12 q-pl-lg"
             label="Full Name"
@@ -34,6 +34,8 @@
             @model="userEmailEntered"
             :rules="emailRules"
           />
+          <DButton class="q-mx-auto" label="Submit"></DButton>
+          <DButton class="q-mx-auto" color="white" textColor="light-blue-12" label="Remove Child"></DButton>
             </div>
           </div>
         </q-form>
@@ -73,108 +75,34 @@ export default {
       nameRules: [
         val => !!val || "Full Name is required"
       ],
+      userName: "",
+      userEmail: ""
     };
   },
   methods: {
+    getSelectedChild(student) {
+      if(student == "Add New") {
+        this.userName = "";
+        this.userEmail = "";
+      }
+      else {
+        this.userName = student.name;
+        this.userEmail = student.email;
+      }
+    },
     userEmailEntered(value) {
       this.userEmail = value;
+    },
+    userNameEntered(value) {
+      this.userName = value;
     },
     closeLogin() {
       this.$emit("model");
     },
     onSubmit() {
-      var userTypeId = this.toggleValue == "jobSeeker" ? 1 : 2;
-      if (this.toggleValue == "") {
-        this.showDialog("Please select between JobSeeker and JobPoster");
-      } else {
-        const response = axios({
-          method: "POST",
-          url: this.$store.state.apiBaseURL + "/user/login",
-          data: {
-            emailAddress: this.userEmail,
-            password: this.userPassword,
-            userTypeId: userTypeId,
-            ipAddress: this.$store.state.ipAddress,
-            deviceType: "System"
-          },
-          headers: {
-            "content-type": "application/json"
-          }
-        })
-          .then(response => {
-            let responseMessage = response.data.message;
-            let activeLogId = response.data.data.activeLogId;
-            if (response.data.data.userId != 0) {
-              this.$store.commit("changeUser", {
-                id: response.data.data.userId,
-                email: this.userEmail,
-                password: this.userPassword,
-                isJobSeeker: userTypeId == "jobSeeker" ? true : false,
-                isJobPoster: this.userTypeId == "jobSeeker" ? false : true,
-                activeLogId: activeLogId
-              });
-              localStorage.setItem(
-                "token",
-                JSON.stringify(response.data.data.jwtToken)
-              );
-
-              if (userTypeId == 2) {
-                this.$router.push("/JobPoster/PostJob");
-                this.$store.commit('changeisJobPoster', true);
-                this.$store.commit('changeisLoggedIn', true);
-                this.$store.commit('changeisLoggedOut',false);
-                this.$store.commit('changeisJobSeeker',false);
-              }
-              else{
-                this.$store.commit('changeisJobPoster', false);
-                this.$store.commit('changeisLoggedIn', true);
-                this.$store.commit('changeisLoggedOut',false);
-                this.$store.commit('changeisJobSeeker',true);
-              }
-              this.closeLogin();
-            } else {
-              this.showDialog(
-                "Please check your email and password combination and try again"
-              );
-            }
-          })
-          .catch(err => {
-            this.showDialog(
-              "Please check your email and password combination and try again"
-            );
-            console.log("error: ", err.message);
-          });
-      }
     },
     closeLogin() {
       this.loginModel = false;
-    }
-  },
-  computed: {
-    userEmail: {
-      get() {
-        return this.$store.state.user.email;
-      },
-      set(value) {
-        this.$store.state.user.email = value;
-      }
-    },
-    toggleValue: {
-      get() {
-        const isTeacher = this.$store.state.isTeacher;
-        if (isTeacher) {
-          return "Teacher";
-        } else {
-          return "Parent";
-        }
-      },
-      set(value) {
-        if (value == "Teacher") {
-          this.$store.state.isTeacher = true;
-        } else {
-          this.$store.state.isTeacher = false;
-        }
-      }
     }
   }
 };

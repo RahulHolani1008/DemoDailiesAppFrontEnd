@@ -8,9 +8,7 @@
             v-if="addNew"
         >
             <q-item-section avatar>
-              <q-avatar rounded>
-                
-              </q-avatar>
+              <q-avatar icon="person_add" :class="{'text-light-blue-12' : link != 'Add New', 'text-white' : link == 'Add New'}" />
             </q-item-section>
             <q-item-section>Add New</q-item-section>
           </q-item>
@@ -27,7 +25,7 @@
                 <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
               </q-avatar>
             </q-item-section>
-            <q-item-section>{{ student }}</q-item-section>
+            <q-item-section>{{ student.name }}</q-item-section>
           </q-item>
         </q-list>
 </template>
@@ -43,12 +41,12 @@ export default {
     data() {
         return {
         studentList: [
-          "Tarun Khanthuriya",
-          "Kanchan Tiwari",
-          "Rishabh Songirkar",
-          "Vinus Agrawal",
+          {name: "Tarun Khanthuriya", email: "tkh@gmail.com"},
+          {name: "Kanchan Tiwari", email: "kanchant@gmail.com"},
+          {name: "Rishabh Songirkar", email: "rish.song@hotmail.com"},
+          {name:"Vinus Agrawal", email: "vinus@gmail.com"}
         ],
-        link: null
+        link: this.addNew ? "Add New" : null
       }
     },
     methods: {

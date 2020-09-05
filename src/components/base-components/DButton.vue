@@ -2,7 +2,7 @@
   <div>
     <q-btn
       :push="push"
-      color="light-blue-12"
+      :color="color"
       :text-color="textColor"
       :label="label"
       @click="buttonClicked"
