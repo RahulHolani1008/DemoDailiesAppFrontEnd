@@ -1,6 +1,6 @@
 <template>
   <q-dialog v-model="model" persistent>
-    <q-card class="my-card full-height" style="width: 434px;">
+    <q-card class="rounded-borders  my-card full-height" style="width: 434px;">
       <q-img src="https://cdn.quasar.dev/img/chicken-salad.jpg" style="height: 29vh;" />
       <q-card-section class="text-h4">{{selectedClass.title}}</q-card-section>
       <q-card-section class="q-py-none fs--18">
@@ -23,24 +23,26 @@
       </q-card-section>
 
       <q-card-section>
-        <div class="bg-dailies-blue text-white fs--18 q-px-md q-py-sm">Select a Child</div>
+        <div class="bg-light-blue-12 text-white fs--18 q-px-md q-py-sm">Select a Child</div>
         <ChildSelector />
       </q-card-section>
       <q-separator />
 
       <q-card-actions align="right">
         <q-btn v-close-popup flat color="primary" label="Cancel" @click="closePopup()" />
-        <q-btn v-close-popup flat color="primary" label="Add Student" />
+        <DButton v-close-popup flat color="primary" label="Add Student" @click="addStudent"/>
       </q-card-actions>
     </q-card>
   </q-dialog>
 </template>
 <script>
-import ChildSelector from "./ChildSelector.vue"
+import ChildSelector from "./ChildSelector.vue";
+import DButton from "../base-components/DButton.vue";
 import { Component, Props } from "vue-property-decorator";
 export default {
   components: {
-    ChildSelector
+    ChildSelector,
+    DButton
   },
   props: {
     model: {
@@ -66,6 +68,9 @@ export default {
     closePopup() {
       this.$emit("model");
     },
+    addStudent() {
+      this.closePopup();
+    }
   },
 };
 </script>

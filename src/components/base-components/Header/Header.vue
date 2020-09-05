@@ -2,7 +2,7 @@
   <q-header reveal elevated class="bg-grey-1 text-black">
     <q-toolbar>
       <q-toolbar-title>
-        <router-link class="text-decoration-none cursor-pointer" to="/">Dailies</router-link>
+        <router-link class="text-decoration-none cursor-pointer text-light-blue-12" to="/">Dailies</router-link>
       </q-toolbar-title>"
       <DButton label="Register" @click="registerOpen = true"/>
       <Register :model="registerOpen" @model="closeRegister" v-if="!this.$store.state.isLoggedIn" />

@@ -1,7 +1,7 @@
 <template>
   <div>
     <q-dialog v-model="model" persistent>
-      <q-card style="width: 500px;" class="q-py-xl q-px-xl">
+      <q-card style="width: 450px;" class="q-py-xl q-px-xl">
         <q-form @submit="onSubmit" class="q-gutter-md">
           <q-card-section class="text-center">
             <q-icon
@@ -12,6 +12,14 @@
             />
             <DToggleButton :stringOptions="toggleButtonData" @model="toggleSelected" />
           </q-card-section>
+          <DTextField
+            class="q-mx-auto q-px-xl"
+            label="Full Name"
+            type="text"
+            :model="userName"
+            @model="userNameEntered"
+            :rules="nameRules"
+          />
           <DTextField
             class="q-mx-auto q-px-xl"
             label="Email"
@@ -75,6 +83,9 @@ export default {
         val => !!val || "Password is required",
         val => val.length >= 6 || "Password length must be atleast 6 characters"
       ],
+      nameRules: [
+        val => !!val || "Full Name is required"
+      ],
       userPassword: "",
       loginModel: false,
     };
@@ -85,6 +96,9 @@ export default {
     },
     userPasswordEntered(value) {
       this.userPassword = value;
+    },
+    userNameEntered(value) {
+      this.userName = value;
     },
     userEmailEntered(value) {
       this.userEmail = value;
@@ -167,6 +181,14 @@ export default {
       },
       set(value) {
         this.$store.state.user.email = value;
+      }
+    },
+    userName: {
+      get() {
+        return this.$store.state.user.fullName;
+      },
+      set(value) {
+        this.$store.state.user.fullName = value;
       }
     },
     toggleValue: {

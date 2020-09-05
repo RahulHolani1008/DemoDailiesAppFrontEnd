@@ -8,7 +8,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     isLoggedIn: false,
-    isTeacher: false,
+    isTeacher: true,
     user: {
       email: "",
       id: 0,
@@ -18,7 +18,7 @@ export default new Vuex.Store({
   },
   plugins: [createPersistedState()],
   mutations: {
-    changeisTeacher(state, value) {
+    changeIsTeacher(state, value) {
       state.isTeacher = value;
     },
     changeisLoggedIn(state, value) {

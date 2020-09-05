@@ -1,9 +1,12 @@
 <template>
   <div>
-    <div class="row q-pa-xl">
-      <div class="col-lg-4 col-md-6 col-sm-12 q-pa-md" v-for="classes in classData" :key="classes.title">
-        <div class="bg-images">
-          <q-card class="q-card-custom q-pa-lg relative-position bg-black">
+    <div class="row q-px-xl q-pt-xl q-pb-none">
+      <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 q-pa-md" 
+      v-for="classes in classData" :key="classes.id"
+      v-show="(classes.id == 0 && isTeacher) || (classes.id != 0)"
+      >
+        <div :class="{'bg-images' : classes.id != 0}">
+          <q-card class="rounded-borders  q-card-custom q-pa-lg relative-position bg-black">
             <q-card-section class="text-h4 text-white">{{classes.title}}</q-card-section>
             <q-card-section class="fs--22 absolute left-25 bottom-100 text-white">
               <span class="text-grey">By</span>
@@ -16,14 +19,19 @@
                 color="light-blue-12"
                 @click="routeToViewDetails(classes)"
               />
-              <DButton label="Enroll Now" class="q-ml-sm q-mr-none" @click="openpopup(classes)" />
+              <DButton label="Enroll Now" class="q-ml-sm q-mr-none" @click="openpopup(classes)" v-if="!isTeacher"/>
             </q-card-actions>
           </q-card>
         </div>
       </div>
     </div>
+    <div class="row q-pb-sm" v-if="!isTeacher">
+      <div class="col-xs-3 col-sm-4 col-md-5 col-lg-10"></div>
+      <DButton label="Manage Children" class="q-my-md justify-end col-xs-8 col-md-7 col-lg-2 q-pl-lg" @click="ManageChildrenModel = true" />
+    </div>
     <EnrollNow :model="EnrollNowModel" @model="closeEnrollNow()" :selectedClass="selectedClass" />
     <Register :model="RegisterModel" @model="closeRegister()" />
+    <ManageChildren :model="ManageChildrenModel" @model="closeManageChildren()" />
   </div>
 </template>
 
@@ -31,18 +39,26 @@
 import DButton from "../components/base-components/DButton.vue";
 import EnrollNow from "../components/sub-components/EnrollNow.vue";
 import Register from "../components/sub-components/Register.vue";
+import ManageChildren from "../components/sub-components/ManageChildren.vue";
 import { Component, Props } from "vue-property-decorator";
 export default {
   components: {
     DButton,
     EnrollNow,
-    Register
+    Register,
+    ManageChildren
   },
   name: "HomePage",
   data() {
     return {
       classData: [
         {
+          id: 0,
+          title: "Add a class",
+          teacherName: this.$store.state.user.fullName
+        },
+        {
+          id: 1,
           title: "Class IX A",
           teacherName: "Maximillan",
           days: "Mon - Wed",
@@ -53,6 +69,7 @@ export default {
           numberOfSeats: 2,
         },
         {
+          id: 2,
           title: "Class IX b",
           teacherName: "Avnish Parmar",
           days: "Mon - Wed",
@@ -63,6 +80,7 @@ export default {
           numberOfSeats: 3,
         },
         {
+          id: 3,
           title: "Class IX c",
           teacherName: "John Doe",
           days: "Mon - Wed",
@@ -73,6 +91,7 @@ export default {
           numberOfSeats: 1,
         },
         {
+          id: 4,
           title: "Class IX d",
           teacherName: "Rahul Holani",
           days: "Mon - Wed",
@@ -83,6 +102,7 @@ export default {
           numberOfSeats: 2,
         },
         {
+          id: 5,
           title: "Class IX e",
           teacherName: "Lorem Ipsum",
           days: "Mon - Wed",
@@ -93,6 +113,7 @@ export default {
           numberOfSeats: 4,
         },
         {
+          id: 6,
           title: "Class IX f",
           teacherName: "Maximillan",
           days: "Mon - Wed",
@@ -106,6 +127,7 @@ export default {
       EnrollNowModel: false,
       RegisterModel: false,
       selectedClass: {},
+      ManageChildrenModel: false
     };
   },
   methods: {
@@ -119,10 +141,14 @@ export default {
     closeRegister() {
       this.RegisterModel = false;
     },
+    closeManageChildren() {
+      this.ManageChildrenModel = false;
+    },
     routeToViewDetails(classes) {
       this.$router.push({
         name: "ViewDetails",
         params: {
+          id: classes.id,
           title: classes.title,
           teacherName: classes.teacherName,
           days: classes.days,
@@ -134,5 +160,14 @@ export default {
       });
     },
   },
-};
+  computed: {
+    isTeacher: {
+      get() {
+        this.$store.state.isTeacher;
+      },
+      set(value) {
+        this.$store.commit("changeIsTeacher",value)
+      }
+    }
+  }};
 </script>

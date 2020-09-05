@@ -1,5 +1,5 @@
 // app global css in SCSS form
-
+@import "./fonts.scss";
 
 .bg-dailies-blue{
     background-color: #2599c7;
@@ -14,14 +14,13 @@
     height: 45vh;   
 }
 
+.text-decoration-none {
+    text-decoration: none;
+  }
+
 .bottom-right-30{
     bottom: 30px;
     right: 5px;
-}
-
-.my-menu-link {
-  color: white;
-  background: #2599c7
 }
 
 .rounded-borders{

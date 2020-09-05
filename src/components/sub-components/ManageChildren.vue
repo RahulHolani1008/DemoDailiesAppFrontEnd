@@ -1,7 +1,7 @@
 <template>
   <div>
     <q-dialog v-model="model" persistent>
-      <q-card style="width: 450px;" class="q-py-xl q-px-xl">
+      <q-card class="rounded-borders  full-width q-py-xl q-px-xl">
         <q-form @submit="onSubmit" class="q-gutter-md">
           <q-card-section class="text-center">
             <q-icon
@@ -10,29 +10,32 @@
               v-on:click="closeLogin"
               style="font-size: 1.5rem; top: -20px; left: -20px; position: absolute;"
             />
-            <DToggleButton :stringOptions="toggleButtonData" @model="toggleSelected" />
+            <div class="text-h5">Manage Children</div>
           </q-card-section>
+          <div class="row">
+            <div class="row col-6">
+              <div class="bg-light-blue-12 text-white fs--18 q-px-md q-py-sm col-12">Select a Child</div>
+              <ChildSelector class="col-12" :addNew="true" />
+            </div>
+            <div class="row col-6">
+              <DTextField
+            class="q-mx-auto col-12 q-pl-lg"
+            label="Full Name"
+            type="text"
+            :model="userName"
+            @model="userNameEntered"
+            :rules="nameRules"
+          />
           <DTextField
-            class="q-mx-auto q-px-xl"
+            class="q-mx-auto col-12 q-pl-lg"
             label="Email"
             type="email"
             :model="userEmail"
             @model="userEmailEntered"
             :rules="emailRules"
           />
-          <DTextField
-            class="q-mx-auto q-px-xl"
-            label="Password"
-            :isPassword="true"
-            @model="userPasswordEntered"
-            :model="userPassword"
-            :rules="passwordRules"
-          />
-          <q-card-section class="text-left primary q-px-xl q-py-none no-margin">Forgot Password?</q-card-section>
-          <q-card-actions align="center">
-            <DButton label="Login" type="submit" />
-          </q-card-actions>
-          <q-card-section class="text-center light-blue-12 q-pa-none" v-on:click="closeLogin">Don't have an account? Register here.</q-card-section>
+            </div>
+          </div>
         </q-form>
       </q-card>
     </q-dialog>
@@ -43,7 +46,7 @@ import Vue from "vue";
 import { Component, Props } from "vue-property-decorator";
 import DTextField from "../base-components/DTextField.vue";
 import DButton from "../base-components/DButton.vue";
-import DToggleButton from "../base-components/DToggleButton.vue";
+import ChildSelector from "./ChildSelector.vue";
 import Login from "./Login.vue";
 
 import axios from "axios";
@@ -52,7 +55,7 @@ export default {
   components: {
     DTextField,
     DButton,
-    DToggleButton,
+    ChildSelector,
     Login
   },
   props: {
@@ -62,29 +65,17 @@ export default {
   },
   data() {
     return {
-      toggleButtonData: [
-        { label: "I'm a Teacher", value: "Teacher" },
-        { label: "I'm a Parent", value: "Parent" }
-      ],
       emailRegEx: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
       emailRules: [
         val => !!val || "Email is required",
         val => this.emailRegEx.test(val) || "Enter a valid email address"
       ],
-      passwordRules: [
-        val => !!val || "Password is required",
-        val => val.length >= 6 || "Password length must be atleast 6 characters"
+      nameRules: [
+        val => !!val || "Full Name is required"
       ],
-      userPassword: ""
     };
   },
   methods: {
-    toggleSelected(value) {
-      this.toggleValue = value;
-    },
-    userPasswordEntered(value) {
-      this.userPassword = value;
-    },
     userEmailEntered(value) {
       this.userEmail = value;
     },
@@ -155,8 +146,9 @@ export default {
           });
       }
     },
-    forgotPassword() {},
-    showDialog(message) {}
+    closeLogin() {
+      this.loginModel = false;
+    }
   },
   computed: {
     userEmail: {

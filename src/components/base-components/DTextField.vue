@@ -151,10 +151,7 @@ export default {
       default: () => [],
     },
     outlined: {
-      default: false,
-    },
-    filled: {
-      default: false,
+      default: true,
     },
     accept: {
       default: ".pdf, .doc, .docx",
