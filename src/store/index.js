@@ -1,29 +1,33 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from "vue";
+import Vuex from "vuex";
 
-// import example from './module-example'
+import createPersistedState from "vuex-persistedstate";
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
-/*
- * If not building with SSR mode, you can
- * directly export the Store instantiation;
- *
- * The function below can be async too; either use
- * async/await or return a Promise which resolves
- * with the Store instance.
- */
-
-export default function (/* { ssrContext } */) {
-  const Store = new Vuex.Store({
-    modules: {
-      // example
+export default new Vuex.Store({
+  state: {
+    isLoggedIn: false,
+    isTeacher: false,
+    user: {
+      email: "",
+      id: 0,
+      fullName: ""
     },
-
-    // enable strict mode (adds overhead!)
-    // for dev mode only
-    strict: process.env.DEV
-  })
-
-  return Store
-}
+    apiBaseURL: "http://localhost:8080",
+  },
+  plugins: [createPersistedState()],
+  mutations: {
+    changeisTeacher(state, value) {
+      state.isTeacher = value;
+    },
+    changeisLoggedIn(state, value) {
+      state.isLoggedIn = value;
+    },
+    changeUser(state, value) {
+      state.user = value;
+    },
+  },
+  actions: {},
+  modules: {}
+});

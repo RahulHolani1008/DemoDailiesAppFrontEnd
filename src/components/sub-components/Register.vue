@@ -1,7 +1,7 @@
 <template>
   <div>
-    <q-dialog v-model="medium" persistent>
-      <q-card style="width: 500px;" class="q-py-xl q-px-xl" id="modal-content1">
+    <q-dialog v-model="model" persistent>
+      <q-card style="width: 500px;" class="q-py-xl q-px-xl">
         <q-form @submit="onSubmit" class="q-gutter-md">
           <q-card-section class="text-center">
             <q-icon
@@ -28,14 +28,14 @@
             :model="userPassword"
             :rules="passwordRules"
           />
-          <q-card-section class="text-left primary q-px-xl q-py-none no-margin">Forgot Password?</q-card-section>
           <q-card-actions align="center">
-            <DButton label="Login" type="submit" />
+            <DButton label="Register" type="submit" />
           </q-card-actions>
-          <q-card-section class="text-center light-blue-12 q-pa-none">Already have an account? Login here.</q-card-section>
+          <q-card-section class="text-center light-blue-12 q-pa-none" v-on:click="loginModel = true">Already have an account? Login here.</q-card-section>
         </q-form>
       </q-card>
     </q-dialog>
+    <Login :model="loginModel" @model="closeLogin" />
   </div>
 </template>
 <script>
@@ -44,25 +44,27 @@ import { Component, Props } from "vue-property-decorator";
 import DTextField from "../base-components/DTextField.vue";
 import DButton from "../base-components/DButton.vue";
 import DToggleButton from "../base-components/DToggleButton.vue";
+import Login from "./Login.vue";
+
 import axios from "axios";
 export default {
-  Name: "Login",
+  Name: "Register",
   components: {
     DTextField,
     DButton,
-    DToggleButton
+    DToggleButton,
+    Login
   },
   props: {
-    medium: {
+    model: {
       default: false
     }
   },
   data() {
     return {
-      secondDialog: false,
       toggleButtonData: [
-        { label: "im a job seeker", value: "jobSeeker" },
-        { label: "im a job poster", value: "jobPoster" }
+        { label: "I'm a Teacher", value: "Teacher" },
+        { label: "I'm a Parent", value: "Parent" }
       ],
       emailRegEx: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
       emailRules: [
@@ -72,7 +74,9 @@ export default {
       passwordRules: [
         val => !!val || "Password is required",
         val => val.length >= 6 || "Password length must be atleast 6 characters"
-      ]
+      ],
+      userPassword: "",
+      loginModel: false,
     };
   },
   methods: {
@@ -86,9 +90,8 @@ export default {
       this.userEmail = value;
     },
     closeLogin() {
-      this.$emit("medium");
+      this.$emit("model");
     },
-    signInWithGoogle() {},
     onSubmit() {
       var userTypeId = this.toggleValue == "jobSeeker" ? 1 : 2;
       if (this.toggleValue == "") {
@@ -153,8 +156,9 @@ export default {
           });
       }
     },
-    forgotPassword() {},
-    showDialog(message) {}
+    closeLogin() {
+      this.loginModel = false;
+    }
   },
   computed: {
     userEmail: {
@@ -165,28 +169,20 @@ export default {
         this.$store.state.user.email = value;
       }
     },
-    userPassword: {
-      get() {
-        return this.$store.state.user.password;
-      },
-      set(value) {
-        this.$store.state.user.password = value;
-      }
-    },
     toggleValue: {
       get() {
-        const isJobSeeker = this.$store.state.user.isJobSeeker;
-        if (isJobSeeker) {
-          return "jobSeeker";
+        const isTeacher = this.$store.state.isTeacher;
+        if (isTeacher) {
+          return "Teacher";
         } else {
-          return "jobPoster";
+          return "Parent";
         }
       },
       set(value) {
-        if (value == "jobSeeker") {
-          this.$store.state.user.isJobSeeker = true;
+        if (value == "Teacher") {
+          this.$store.state.isTeacher = true;
         } else {
-          this.$store.state.user.isJobSeeker = false;
+          this.$store.state.isTeacher = false;
         }
       }
     }

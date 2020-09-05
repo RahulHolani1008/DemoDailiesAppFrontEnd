@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="row q-pa-xl">
-      <div class="col-lg-4 col-md-6 col-sm-12 q-pa-md" v-for="classes in classData" :key="classes">
+      <div class="col-lg-4 col-md-6 col-sm-12 q-pa-md" v-for="classes in classData" :key="classes.title">
         <div class="bg-images">
           <q-card class="q-card-custom q-pa-lg relative-position bg-black">
             <q-card-section class="text-h4 text-white">{{classes.title}}</q-card-section>
@@ -13,7 +13,7 @@
               <DButton
                 label="View Details"
                 class="q-ml-auto"
-                color="blue"
+                color="light-blue-12"
                 @click="routeToViewDetails(classes)"
               />
               <DButton label="Enroll Now" class="q-ml-sm q-mr-none" @click="openpopup(classes)" />
@@ -23,17 +23,20 @@
       </div>
     </div>
     <EnrollNow :model="EnrollNowModel" @model="closeEnrollNow()" :selectedClass="selectedClass" />
+    <Register :model="RegisterModel" @model="closeRegister()" />
   </div>
 </template>
 
 <script>
 import DButton from "../components/base-components/DButton.vue";
 import EnrollNow from "../components/sub-components/EnrollNow.vue";
+import Register from "../components/sub-components/Register.vue";
 import { Component, Props } from "vue-property-decorator";
 export default {
   components: {
     DButton,
     EnrollNow,
+    Register
   },
   name: "HomePage",
   data() {
@@ -101,6 +104,7 @@ export default {
         },
       ],
       EnrollNowModel: false,
+      RegisterModel: false,
       selectedClass: {},
     };
   },
@@ -111,6 +115,9 @@ export default {
     },
     closeEnrollNow() {
       this.EnrollNowModel = false;
+    },
+    closeRegister() {
+      this.RegisterModel = false;
     },
     routeToViewDetails(classes) {
       this.$router.push({

@@ -3,9 +3,9 @@
     <q-toolbar>
       <q-toolbar-title>
         <router-link class="text-decoration-none cursor-pointer" to="/">Dailies</router-link>
-      </q-toolbar-title>
-      <DButton label="Register" />
-      <Register :model="registerOpen" @medium="closeRegister" v-if="!this.$store.state.isLoggedIn" />
+      </q-toolbar-title>"
+      <DButton label="Register" @click="registerOpen = true"/>
+      <Register :model="registerOpen" @model="closeRegister" v-if="!this.$store.state.isLoggedIn" />
     </q-toolbar>
   </q-header>
 </template>
