@@ -29,7 +29,7 @@
       <q-separator />
 
       <q-card-actions align="right">
-        <q-btn v-close-popup flat color="primary" label="Cancel" @click="closePopup()" />
+        <q-btn v-close-popup flat color="primary" label="Cancel" @click="closePopup" />
         <DButton v-close-popup flat color="primary" label="Add Student" @click="addStudent"/>
       </q-card-actions>
     </q-card>

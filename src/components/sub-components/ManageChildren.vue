@@ -35,7 +35,7 @@
             :rules="emailRules"
           />
           <DButton class="q-mx-auto" label="Submit"></DButton>
-          <DButton class="q-mx-auto" color="white" textColor="light-blue-12" label="Remove Child"></DButton>
+          <DButton class="q-mx-auto q-pt-sm" color="white" textColor="light-blue-12" label="Remove Child"></DButton>
             </div>
           </div>
         </q-form>

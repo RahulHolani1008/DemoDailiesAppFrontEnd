@@ -42,7 +42,7 @@
           <q-card-section class="text-center light-blue-12 q-pa-none" v-on:click="loginModel = true">Already have an account? Login here.</q-card-section>
         </q-form>
       </q-card>
-      <q-dialog v-model="secondDialog" persistent transition-show="scale" transition-hide="scale">
+      <q-dialog v-model="secondDialog" transition-show="scale" transition-hide="scale">
         <q-card class="text-black" style="width: 300px">
           <q-card-section class="q-pt-md text-center">
             {{
@@ -50,12 +50,12 @@
             }}
           </q-card-section>
           <q-card-actions align="center">
-            <BHButton label="OK" v-close-popup />
+            <DButton label="OK" v-close-popup />
           </q-card-actions>
         </q-card>
       </q-dialog>
     </q-dialog>
-    <Login :model="loginModel" @model="closeRegister" />
+    <Login :model="loginModel" @model="closeLogin" />
   </div>
 </template>
 <script>
@@ -84,6 +84,7 @@ export default {
     return {
       secondDialog: false,
       notificationMessage: "",
+      toggleValue: "",
       toggleButtonData: [
         { label: "I'm a Teacher", value: "Teacher" },
         { label: "I'm a Parent", value: "Parent" }
@@ -123,13 +124,13 @@ export default {
     onSubmit() {
       const APIURL = this.toggleValue == "Teacher" ? "teacher" : "parent";
       if (this.toggleValue == "") {
-        this.showDialog("Please select between JobSeeker and JobPoster");
+        this.showDialog("Please select between Teacher and Parent");
       } else {
         const response = axios({
           method: "POST",
           url: this.$store.state.apiBaseURL + "/dailies/" +APIURL+"/register",
           data: {
-            emailAddress: this.userEmail,
+            email: this.userEmail,
             password: this.userPassword,
             fullName : this.userName
           },
@@ -138,40 +139,31 @@ export default {
           }
         })
           .then(response => {
-            let responseMessage = response.data.message;
-            let activeLogId = response.data.data.activeLogId;
-            if (response.data.data.userId != 0) {
+            alert(JSON.stringify(response))
+            if(response.status == 200) {
               this.$store.commit("changeUser", {
-                id: response.data.data.userId,
-                email: this.userEmail,
-                password: this.userPassword,
-                isJobSeeker: userTypeId == "jobSeeker" ? true : false,
-                isJobPoster: this.userTypeId == "jobSeeker" ? false : true,
-                activeLogId: activeLogId
-              });
-              this.$store.commit('changeisLoggedIn', true);
-              if (this.toggleValue == "Teacher") {
-                this.$store.commit('changeIsTeacher',true);
-              }
-              else{
-                this.$store.commit('changeIsTeacher',false);
-              }
+                id: response.data.id,
+                fullName: response.data.fullName,
+                email: response.data.email
+              })
+              this.$store.commit("changeIsTeacher", this.toggleValue == "Teacher" ? true : false);
+              this.$store.commit("changeIsLoggedIn", true);
               this.closeRegister();
             } else {
               this.showDialog(
-                "This email already exists with us. Please try logging in."
+                "Error connecting to our servers. Please check internet connection"
               );
             }
           })
           .catch(err => {
             this.showDialog(
-              "This email already exists with us. Please try logging in."
+              "Email already exists with us. Please try logging in."
             );
             console.log("error: ", err.message);
           });
       }
     },
-    closeRegister() {
+    closeLogin() {
       this.loginModel = false;
     },
     showDialog(message) {
@@ -194,23 +186,6 @@ export default {
       },
       set(value) {
         this.$store.state.user.fullName = value;
-      }
-    },
-    toggleValue: {
-      get() {
-        const isTeacher = this.$store.state.isTeacher;
-        if (isTeacher) {
-          return "Teacher";
-        } else {
-          return "Parent";
-        }
-      },
-      set(value) {
-        if (value == "Teacher") {
-          this.$store.state.isTeacher = true;
-        } else {
-          this.$store.state.isTeacher = false;
-        }
       }
     }
   }

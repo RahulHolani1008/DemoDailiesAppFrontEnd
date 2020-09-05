@@ -29,9 +29,9 @@
       <div class="col-xs-3 col-sm-4 col-md-5 col-lg-10"></div>
       <DButton label="Manage Children" class="q-my-md justify-end col-xs-8 col-md-7 col-lg-2 q-pl-lg" @click="ManageChildrenModel = true" />
     </div>
-    <EnrollNow :model="EnrollNowModel" @model="closeEnrollNow()" :selectedClass="selectedClass" />
-    <Register :model="RegisterModel" @model="closeRegister()" />
-    <ManageChildren :model="ManageChildrenModel" @model="closeManageChildren()" />
+    <EnrollNow :model="EnrollNowModel" @model="closeEnrollNow" :selectedClass="selectedClass" />
+    <Register :model="RegisterModel" @model="closeRegister" />
+    <ManageChildren :model="ManageChildrenModel" @model="closeManageChildren" />
   </div>
 </template>
 
