@@ -105,6 +105,7 @@
 }
 </style>
 <script>
+import { Component, Props } from "vue-property-decorator";
 export default {
   data() {
     return {

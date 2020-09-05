@@ -16,7 +16,7 @@
                 color="blue"
                 @click="routeToViewDetails(classes)"
               />
-              <DButton label="Enroll Now" class="q-ml-md" @click="openpopup(classes)" />
+              <DButton label="Enroll Now" class="q-ml-sm q-mr-none" @click="openpopup(classes)" />
             </q-card-actions>
           </q-card>
         </div>
@@ -29,6 +29,7 @@
 <script>
 import DButton from "../components/base-components/DButton.vue";
 import EnrollNow from "../components/sub-components/EnrollNow.vue";
+import { Component, Props } from "vue-property-decorator";
 export default {
   components: {
     DButton,

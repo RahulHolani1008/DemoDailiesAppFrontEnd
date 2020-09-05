@@ -28,20 +28,11 @@
       </q-card-section>
 
       <q-card-section>
-        <div class="bg-dailies-blue text-white fs--18 q-px-md q-py-sm">Select a Child</div>
-        <q-list bordered>
-          <q-item clickable v-ripple v-for="student in studentList" :key="student">
-            <q-item-section avatar>
-              <q-avatar rounded>
-                <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
-              </q-avatar>
-            </q-item-section>
-            <q-item-section>{{ student }}</q-item-section>
-          </q-item>
-        </q-list>
+        <div class="bg-light-blue-12 text-white fs--18 q-px-md q-py-sm">Select a Child</div>
+        <ChildSelector />
       </q-card-section>
       <q-card-actions align="right" class="q-pr-md">
-        <DButton label="Add Student" class="bg-dailies-blue" />
+        <DButton label="Add Student"/>
       </q-card-actions>
     </div>
   </div>
@@ -49,6 +40,8 @@
 
 <script>
 import DButton from "../components/base-components/DButton.vue";
+import ChildSelector from "../components/sub-components/ChildSelector.vue";
+import { Component, Props } from "vue-property-decorator";
 export default {
   props: {
     title: {
@@ -75,6 +68,7 @@ export default {
   },
   components: {
     DButton,
+    ChildSelector
   },
   name: "ViewDetails",
   data() {

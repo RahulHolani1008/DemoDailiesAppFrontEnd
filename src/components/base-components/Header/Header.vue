@@ -12,6 +12,7 @@
 <script>
 import DButton from "../DButton.vue";
 import Register from "../../sub-components/Register.vue";
+import { Component, Props } from "vue-property-decorator";
 export default {
   name: "Header",
   components: {

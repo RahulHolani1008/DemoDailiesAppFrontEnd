@@ -2,49 +2,48 @@
   <div>
     <q-btn
       :push="push"
-      :color="color"
+      color="light-blue-12"
       :text-color="textColor"
       :label="label"
-      v-on:click="buttonClicked"
+      @click="buttonClicked"
       class="rounded-borders q-px-md"
       :type="type"
       :outline="outline"
       v-if="!isIconRight && !isIconLeft"
       no-caps
     />
-
-    <q-btn
+    <!-- <q-btn
       :push="push"
-      :color="color"
+      color="light-blue-12"
       :text-color="textColor"
       :label="label"
-      v-on:click="buttonClicked"
+      @click="buttonClicked"
       class="rounded-borders q-px-md"
       :type="type"
       icon="search"
       v-if="isIconLeft"
       :outline="outline"
     />
-
     <q-btn
       :push="push"
-      :color="color"
+      color="light-blue-12"
       :outline="outline"
       :text-color="textColor"
       :label="label"
-      v-on:click="buttonClicked"
+      @click="buttonClicked"
       v-if="isIconRight"
       class="rounded-borders q-px-md"
       :type="type"
       icon-right="keyboard_arrow_right"
-    ></q-btn>
+    ></q-btn> -->
   </div>
 </template>
 <script>
+import { Component, Props } from "vue-property-decorator";
 export default {
   props: {
     color: {
-      default: "bg-dailies-blue",
+      default: "light-blue-12",
     },
     textColor: {
       default: "white",
@@ -53,25 +52,16 @@ export default {
       default: "Push me",
     },
     outline: {
-      default: true,
+      default: false,
     },
     push: {
-      default: true,
+      default: false,
     },
     type: {
       default: "submit",
     },
-    iconRightName: {
-      default: "",
-    },
-    isIconRight: {
-      default: false,
-    },
-    isIconLeft: {
-      default: false,
-    },
     noCaps: {
-      default: false,
+      default: true,
     },
   },
   methods: {

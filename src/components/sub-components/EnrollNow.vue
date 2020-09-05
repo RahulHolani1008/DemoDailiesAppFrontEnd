@@ -1,7 +1,7 @@
 <template>
   <q-dialog v-model="model" persistent>
-    <q-card class="my-card" style="width: 434px; overflow: hidden;">
-      <q-img src="https://cdn.quasar.dev/img/chicken-salad.jpg" />
+    <q-card class="my-card full-height" style="width: 434px;">
+      <q-img src="https://cdn.quasar.dev/img/chicken-salad.jpg" style="height: 29vh;" />
       <q-card-section class="text-h4">{{selectedClass.title}}</q-card-section>
       <q-card-section class="q-py-none fs--18">
         <span class="text-grey">Taken By</span>
@@ -24,16 +24,7 @@
 
       <q-card-section>
         <div class="bg-dailies-blue text-white fs--18 q-px-md q-py-sm">Select a Child</div>
-        <q-list bordered>
-          <q-item clickable v-ripple v-for="student in studentList" :key="student">
-            <q-item-section avatar>
-              <q-avatar rounded>
-                <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
-              </q-avatar>
-            </q-item-section>
-            <q-item-section>{{ student }}</q-item-section>
-          </q-item>
-        </q-list>
+        <ChildSelector />
       </q-card-section>
       <q-separator />
 
@@ -45,7 +36,12 @@
   </q-dialog>
 </template>
 <script>
+import ChildSelector from "./ChildSelector.vue"
+import { Component, Props } from "vue-property-decorator";
 export default {
+  components: {
+    ChildSelector
+  },
   props: {
     model: {
       default: false,
@@ -63,12 +59,7 @@ export default {
   },
   data() {
     return {
-      studentList: [
-        "Tarun Khanthuriya",
-        "Kanchan Tiwari",
-        "Rishabh Songirkar",
-        "Vinus Agrawal",
-      ],
+      
     };
   },
   methods: {
